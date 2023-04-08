@@ -1,0 +1,10 @@
+{
+  "changelogDate": "20230407215910",
+  "dto": "no",
+  "fields": [],
+  "name": "FileEntry",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [],
+  "service": "serviceClass"
+}

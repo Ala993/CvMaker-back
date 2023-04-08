@@ -1,0 +1,10 @@
+{
+  "changelogDate": "20230403210607",
+  "dto": "no",
+  "fields": [],
+  "name": "Collaborator",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [],
+  "service": "serviceClass"
+}

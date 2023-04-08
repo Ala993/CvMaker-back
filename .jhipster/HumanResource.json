@@ -1,0 +1,10 @@
+{
+  "changelogDate": "20230406234741",
+  "dto": "no",
+  "fields": [],
+  "name": "HumanResource",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [],
+  "service": "serviceClass"
+}
