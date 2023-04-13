@@ -23,7 +23,6 @@ public class Cv implements Serializable {
     @Field
     private String title;
 
-
     @Field("address")
     private String address;
 
@@ -55,6 +54,10 @@ public class Cv implements Serializable {
     @Field
     @DBRef
     private FileEntry image;
+
+    @Field
+    @DBRef
+    private List<Language> languages;
 
     public String getTitle() {
         return title;
@@ -169,6 +172,14 @@ public class Cv implements Serializable {
 
     public void setImage(FileEntry image) {
         this.image = image;
+    }
+
+    public List<Language> getLanguages() {
+        return languages;
+    }
+
+    public void setLanguages(List<Language> languages) {
+        this.languages = languages;
     }
 
     @Override

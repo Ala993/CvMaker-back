@@ -4,7 +4,11 @@ import com.cv.maker.domain.Collaborator;
 import com.cv.maker.domain.Cv;
 import com.cv.maker.repository.CollaboratorRepository;
 import com.cv.maker.repository.CvRepository;
-import java.util.Optional;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+import com.cv.maker.service.dto.CvFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -104,5 +108,22 @@ public class CvService {
     public void delete(String id) {
         log.debug("Request to delete Cv : {}", id);
         cvRepository.deleteById(id);
+    }
+
+    public List<Cv> findCvsByFilter(CvFilter cvFilter){
+        List<Cv> cvs = cvRepository.findAll();
+        Set<Cv> result = new HashSet<>();
+        if(cvFilter.getSkills().isEmpty()) return cvs;
+        cvFilter.getSkills().forEach(skill -> {
+            if(skill.getLevel() == null) skill.setLevel("");
+            if(skill.getName() == null) skill.setName("");
+
+            result.addAll(cvs.stream().filter(cv -> {
+                return cv.getSkills().stream()
+                    .anyMatch(skill1 -> (skill.getName().equals("") || skill1.getName().toLowerCase().contains(skill.getName().toLowerCase()))
+                        && (skill.getLevel().equals("")|| skill.getLevel().equals(skill1.getLevel())));
+            }).collect(Collectors.toList()));
+        });
+        return new ArrayList<>(result);
     }
 }

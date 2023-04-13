@@ -15,6 +15,8 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import com.cv.maker.service.dto.UserPassword;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
@@ -342,4 +344,13 @@ public class UserService {
         String login =  ((org.springframework.security.core.userdetails.User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
        return userRepository.findOneByLogin(login).orElseThrow();
     }
-}
+
+
+
+    public void changeUserPassword (String userId, UserPassword userPassword){
+        User user = userRepository.findById(userId).orElseThrow();
+        user.setPassword(passwordEncoder.encode(userPassword.getNewPassword()));
+        userRepository.save(user);
+    }
+
+    }

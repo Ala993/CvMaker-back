@@ -4,6 +4,7 @@ import com.cv.maker.domain.Cv;
 import com.cv.maker.repository.CollaboratorRepository;
 import com.cv.maker.repository.CvRepository;
 import com.cv.maker.service.CvService;
+import com.cv.maker.service.dto.CvFilter;
 import com.cv.maker.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -166,5 +167,11 @@ public class CvResource {
         log.debug("REST request to delete Cv : {}", id);
         cvService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id)).build();
+    }
+
+    @PostMapping("/cvs-filtered")
+    public ResponseEntity<List<Cv>> findCvsByFilter(@RequestBody CvFilter cvFilter) {
+        List<Cv> cvs = cvService.findCvsByFilter(cvFilter);
+        return ResponseEntity.ok().body(cvs);
     }
 }

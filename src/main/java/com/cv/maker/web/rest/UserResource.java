@@ -7,6 +7,7 @@ import com.cv.maker.security.AuthoritiesConstants;
 import com.cv.maker.service.MailService;
 import com.cv.maker.service.UserService;
 import com.cv.maker.service.dto.AdminUserDTO;
+import com.cv.maker.service.dto.UserPassword;
 import com.cv.maker.web.rest.errors.BadRequestAlertException;
 import com.cv.maker.web.rest.errors.EmailAlreadyUsedException;
 import com.cv.maker.web.rest.errors.LoginAlreadyUsedException;
@@ -209,6 +210,12 @@ public class UserResource {
     public ResponseEntity<String> userType() {
         String userType = userService.userType();
         return ResponseEntity.ok().body(userType);
+    }
+
+    @PostMapping("/user-change-password/{userId}")
+    public ResponseEntity<Void> userChangePassword(@RequestBody UserPassword userPassword, @PathVariable String userId) {
+        userService.changeUserPassword(userId, userPassword);
+        return ResponseEntity.noContent().build();
     }
 
 }
