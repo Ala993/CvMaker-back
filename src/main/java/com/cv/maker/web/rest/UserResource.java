@@ -212,6 +212,13 @@ public class UserResource {
         return ResponseEntity.ok().body(userType);
     }
 
+    @GetMapping("/current-user")
+    public ResponseEntity<User> getCurrentUser() {
+        Optional<User> optionalUser = userService.getCurrentUser();
+        return ResponseUtil.wrapOrNotFound(optionalUser);
+    }
+
+
     @PostMapping("/user-change-password/{userId}")
     public ResponseEntity<Void> userChangePassword(@RequestBody UserPassword userPassword, @PathVariable String userId) {
         userService.changeUserPassword(userId, userPassword);

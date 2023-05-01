@@ -1,12 +1,18 @@
 package com.cv.maker.service;
 
-import com.cv.maker.domain.HumanResource;
+import com.cv.maker.domain.*;
 import com.cv.maker.repository.HumanResourceRepository;
+
+import java.time.Instant;
 import java.util.Optional;
+
+import com.cv.maker.repository.UserRepository;
+import com.cv.maker.security.AuthoritiesConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -19,8 +25,15 @@ public class HumanResourceService {
 
     private final HumanResourceRepository humanResourceRepository;
 
-    public HumanResourceService(HumanResourceRepository humanResourceRepository) {
+    private final PasswordEncoder passwordEncoder;
+
+    private final UserRepository userRepository;
+
+
+    public HumanResourceService(HumanResourceRepository humanResourceRepository, PasswordEncoder passwordEncoder, UserRepository userRepository) {
         this.humanResourceRepository = humanResourceRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -81,5 +94,36 @@ public class HumanResourceService {
     public void delete(String id) {
         log.debug("Request to delete HumanResource : {}", id);
         humanResourceRepository.deleteById(id);
+    }
+
+
+    public HumanResource createHumanResource(HumanResource humanResource) {
+        log.debug("Request to save HumanResource : {}", humanResource);
+        User newUser = new User();
+        newUser.setLogin(humanResource.getUser().getEmail());
+        newUser.setPassword(passwordEncoder.encode(humanResource.getUser().getPassword()));
+        newUser.setFirstName(humanResource.getUser().getFirstName());
+        newUser.setLastName(humanResource.getUser().getLastName());
+        newUser.setEmail(humanResource.getUser().getEmail());
+        newUser.setActivated(true);
+        newUser.setLangKey("fr");
+        newUser.setCreatedDate(Instant.now());
+        Authority authority = new Authority();
+        authority.setName(AuthoritiesConstants.USER);
+        newUser.getAuthorities().add(authority);
+        newUser = userRepository.save(newUser);
+        humanResource.setUser(newUser);
+
+        return humanResourceRepository.save(humanResource);
+    }
+    public HumanResource updateHumanResource(HumanResource humanResource) {
+        User user = userRepository.findById(humanResource.getUser().getId()).orElseThrow();
+        user.setFirstName(humanResource.getUser().getFirstName());
+        user.setLastName(humanResource.getUser().getLastName());
+        user = userRepository.save(user);
+        humanResource.setUser(user);
+
+        return humanResourceRepository.save(humanResource);
+
     }
 }

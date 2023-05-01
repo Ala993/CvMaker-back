@@ -92,11 +92,11 @@ public class InitialSetupMigration {
     private User createAdmin(Authority adminAuthority, Authority userAuthority) {
         User adminUser = new User();
         adminUser.setId("user-1");
-        adminUser.setLogin("admin");
+        adminUser.setLogin("admin@cvmaker.com");
         adminUser.setPassword("$2a$10$gSAhZrxMllrbgj/kkK9UceBPpChGWJA7SYIb1Mqo.n5aNLq1/oRrC");
         adminUser.setFirstName("admin");
         adminUser.setLastName("Administrator");
-        adminUser.setEmail("admin@localhost");
+        adminUser.setEmail("admin@cvmaker.com");
         adminUser.setActivated(true);
         adminUser.setLangKey("en");
         adminUser.setCreatedBy(Constants.SYSTEM);
@@ -119,7 +119,6 @@ public class InitialSetupMigration {
         collaboratorUser.setLangKey("en");
         collaboratorUser.setCreatedBy(Constants.SYSTEM);
         collaboratorUser.setCreatedDate(Instant.now());
-        collaboratorUser.getAuthorities().add(adminAuthority);
         collaboratorUser.getAuthorities().add(userAuthority);
         return collaboratorUser;
     }
@@ -135,7 +134,6 @@ public class InitialSetupMigration {
         humanResourceUser.setLangKey("en");
         humanResourceUser.setCreatedBy(Constants.SYSTEM);
         humanResourceUser.setCreatedDate(Instant.now());
-        humanResourceUser.getAuthorities().add(adminAuthority);
         humanResourceUser.getAuthorities().add(userAuthority);
         return humanResourceUser;
     }

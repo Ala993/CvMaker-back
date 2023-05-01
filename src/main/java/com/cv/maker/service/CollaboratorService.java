@@ -73,7 +73,6 @@ public class CollaboratorService {
         }
 
         return collaboratorRepository.save(collaborator);
-
     }
 
     public Collaborator updateCollaborator(Collaborator collaborator) {
@@ -146,7 +145,7 @@ public class CollaboratorService {
     }
 
     public Optional<Collaborator> collaboratorByCurrentUser() {
-        User user = userService.getCurrentUser();
+        User user = userService.getCurrentUser().orElseThrow();
         return collaboratorRepository.findOneByUserId(user.getId());
     }
 }

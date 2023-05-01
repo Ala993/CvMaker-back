@@ -59,7 +59,7 @@ public class HumanResourceResource {
         if (humanResource.getId() != null) {
             throw new BadRequestAlertException("A new humanResource cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        HumanResource result = humanResourceService.save(humanResource);
+        HumanResource result = humanResourceService.createHumanResource(humanResource);
         return ResponseEntity
             .created(new URI("/api/human-resources/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
@@ -93,7 +93,7 @@ public class HumanResourceResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        HumanResource result = humanResourceService.save(humanResource);
+        HumanResource result = humanResourceService.updateHumanResource(humanResource);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, humanResource.getId()))

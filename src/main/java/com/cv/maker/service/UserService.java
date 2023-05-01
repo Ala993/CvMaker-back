@@ -330,7 +330,7 @@ public class UserService {
 
 
     public String userType(){
-        User currentUser  = getCurrentUser();
+        User currentUser  = getCurrentUser().orElseThrow();
         Optional<Collaborator> collaborator = collaboratorRepository.findOneByUserId(currentUser.getId());
         if(collaborator.isPresent()){
             return "COLLABORATOR";
@@ -340,9 +340,9 @@ public class UserService {
 
     }
 
-    public User getCurrentUser(){
+    public Optional<User> getCurrentUser(){
         String login =  ((org.springframework.security.core.userdetails.User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-       return userRepository.findOneByLogin(login).orElseThrow();
+       return userRepository.findOneByLogin(login);
     }
 
 
